@@ -1,19 +1,13 @@
 <template>
   <div>
     <h1>Content auth</h1>
-    <button @click.prevent="logout">Salir</button>
   </div>
 </template>
 
 <script>
   export default {
+    layout: 'auth',
     middleware: ['protect'],
-    methods: {
-      logout() {
-        this.$router.push('/')
-        this.$cookies.removeAll()
-      }
-    },
   }
 </script>
 

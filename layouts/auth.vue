@@ -1,16 +1,16 @@
 <template>
   <div>
-    <Nav/>
+    <navAuth/>
     <Nuxt/>
   </div>
 </template>
 
 <script>
-import Nav from '../components/layouts/default/nav.vue';
+import navAuth from '../components/layouts/navAuth.vue';
 export default {
   components: {
-    Nav,
-  },
+    navAuth,
+  }
 }
 </script>
 

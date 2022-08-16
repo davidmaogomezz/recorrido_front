@@ -7,6 +7,7 @@
 <script>
   import SignUp from './../components/auth/SignUp.vue'
   export default {
+    layout: 'public',
     middleware: ['unprotect'],
     methods: {
       goToPage(page) {
