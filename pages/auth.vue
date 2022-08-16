@@ -1,13 +1,29 @@
 <template>
   <div>
-    <h1>Content auth</h1>
+    <component :is="role" />
   </div>
 </template>
 
 <script>
+  import admin from "~/components/auth/admin/index.vue"
+  import expert from "~/components/auth/expert/index.vue"
+  import client from "~/components/auth/client/index.vue"
   export default {
     layout: 'auth',
     middleware: ['protect'],
+    data() {
+      return {
+        role: ''
+      }
+    },
+    mounted() {
+      this.role = this.$cookies.get('role')
+    },
+    components: {
+      admin,
+      expert,
+      client
+    }
   }
 </script>
 
