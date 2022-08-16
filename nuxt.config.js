@@ -40,6 +40,8 @@ export default {
     '@nuxtjs/axios',
     // https://www.npmjs.com/package/cookie-universal-nuxt
     'cookie-universal-nuxt',
+    // https://www.npmjs.com/package/@nuxtjs/moment
+    '@nuxtjs/moment',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
