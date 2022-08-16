@@ -2,6 +2,7 @@
   <div>
     <h1>Component expert</h1>
     <p>Weeks {{JSON.stringify(weeks)}}</p>
+    <p>Contracts {{JSON.stringify(contracts)}}</p>
   </div>
 </template>
 
@@ -18,20 +19,27 @@
           let week = parseInt(currentWeek) + count
           let elementDropdown = {
             text: `Semana ${week} ${currentYear}`,
-            value: week
+            week: week,
+            year: currentYear
           }
           this.weeks.push(elementDropdown)
           count++
         }
+      },
+      async getContracts() {
+        const response = await this.$axios.$get('contracts')
+        this.contracts = response.contracts
       }
     },
     data() {
       return {
-        weeks: []
+        weeks: [],
+        contracts: []
       }
     },
     mounted() {
       this.fillWeeks()
+      this.getContracts()
     }
   }
 </script>
