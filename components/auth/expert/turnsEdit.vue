@@ -15,7 +15,7 @@
             <tr role="row" v-for="turn in turns[day]">
               <td class="cell-center">{{turn.date_hour | formatDateHour }}</td>
               <td class="cell-center" v-for="expert in experts">
-                <b-checkbox :disabled="disbledForDate(turn.date_hour)" v-model="selected" :label="`check-box-${expert.id}`" :value="{ turn_id: turn.id, user_id: expert.id}"></b-checkbox>
+                <b-checkbox :disabled="disbledForDate(turn.date_hour)" v-model="selected" :value="{ turn_id: turn.id, user_id: expert.id}"></b-checkbox>
               </td>
             </tr>
           </tbody>
@@ -73,11 +73,35 @@
         let day_turns = new Date(date_hour)
         day_turns.setHours( day_turns.getHours() + 5 );
         let current_day = new Date()
-        return day_turns < current_day
+        return (current_day - day_turns) > 900000
+      },
+      setCheck(turn, expert) {
+        if (turn.availables) {
+          const arrayAvailables = turn.availables.split(",")
+          console.log(arrayAvailables.includes(expert.id.toString()));
+          return arrayAvailables.includes(expert.id.toString())
+        } else {
+          return false
+        }
+      },
+      populateSelectected() {
+        for (const day in this.turns) {
+          for (const turn of this.turns[day]) {
+            if (turn.availables) {
+              const arrayAvailables = turn.availables.split(",")
+              for (const expert of this.experts) {
+                if (arrayAvailables.includes(expert.id.toString())) {
+                  this.selected.push({ turn_id: turn.id, user_id: expert.id })
+                }
+              }
+            }
+          }
+        }
       }
     },
     mounted () {
       this.getExperts();
+      this.populateSelectected()
     },
     watch: {
       selected: {
