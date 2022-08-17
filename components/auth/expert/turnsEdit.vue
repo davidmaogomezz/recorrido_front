@@ -51,7 +51,8 @@
         return moment(`${date_split.reverse().join().replace(/,/g, '')}`).format('dddd DD MMMM')
       },
       formatDateHour: function (value) {
-        return `${moment(value).format('LT')} - ${moment(value).format('LT')}`
+        let startHour = parseInt(value.split('T')[1].split(':')[0])
+        return `${startHour}:00 - ${startHour + 1}:00`
       }
     },
     methods: {
@@ -73,7 +74,6 @@
         let current_day = new Date()
         day_turns = moment(day_turns).format('LL')
         current_day = moment(current_day).format('LL')
-        if (day_turns < current_day) console.log(`${day_turns} < ${current_day} - ${day_turns < current_day}`);
         return day_turns < current_day
       }
     },
