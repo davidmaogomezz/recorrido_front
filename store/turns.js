@@ -11,7 +11,6 @@ export const mutations = {
     const day = date_hour_split[2].split('T')[0]
     const date = `${day}/${date_hour_split[1]}/${date_hour_split[0]}`
     let turns = state.turns[date]
-    debugger
     if (turns) {
       turns = turns.filter(t => t.id !== turn.id)
       turns.push(turn)

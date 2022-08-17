@@ -62,22 +62,21 @@
       },
       async handlerDifference(newValue, oldValue) {
         let params = null
-        let makeRequest = false
+        let operation = null
         if (newValue.length > oldValue.length) {
           params = newValue.filter(x => !oldValue.includes(x))[0]
           if (params) {
-            params['operation'] = 'add'
-            makeRequest = true
+            operation = 'add'
           }
         } else {
           params = oldValue.filter(x => !newValue.includes(x))[0]
+          console.log(`params ${JSON.stringify(params)}`);
           if (params) {
-            params['operation'] = 'remove'
-            makeRequest = true
+            operation = 'remove'
           }
         }
-        if (makeRequest) {
-          const request = await this.$axios.put(`turns/${params.id}`, params)
+        if (operation !== null) {
+          const request = await this.$axios.put(`turns/${params.id}`, { object_turn: params, operation: operation})
           if (request.status == 200) {
             const turn = request.data.turn
             this.$store.dispatch('turns/updateTurn', turn)
@@ -119,11 +118,8 @@
       this.populateSelectected()
     },
     watch: {
-      selected: {
-        deep: true,
-        handler: function (newValue, oldValue) {
-          this.handlerDifference(newValue, oldValue)
-        }
+      selected(newValue, oldValue) {
+        this.handlerDifference(newValue, oldValue)
       }
     }
 
