@@ -15,7 +15,7 @@
             <tr role="row" v-for="turn in turns[day]">
               <td class="cell-center">{{turn.date_hour | formatDateHour }}</td>
               <td class="cell-center" v-for="expert in experts">
-                <b-checkbox :disabled="disbledForDate(turn.date_hour)" v-model="selected" :value="{ turn_id: turn.id, user_id: expert.id}"></b-checkbox>
+                <b-checkbox :disabled="disbledForDate(turn.date_hour)" v-model="selected" :value="{ id: turn.id, user_id: expert.id }"></b-checkbox>
               </td>
             </tr>
           </tbody>
@@ -60,13 +60,28 @@
         const request = await this.$axios.get('users', { params: { role: 'expert' } })
         if (request.status == 200) this.$store.dispatch('experts/storeExperts', request.data.users)
       },
-      handlerDifference(newValue, oldValue) {
-        if (newValue.length > oldValue.length) { // add
-          console.log(`add ${JSON.stringify(newValue.filter(x => !oldValue.includes(x)))}`)
-          // TO DO request edit availability
-        } else { // remove
-          console.log(`remove ${JSON.stringify(oldValue.filter(x => !newValue.includes(x)))}`)
-          // TO DO request edit availability
+      async handlerDifference(newValue, oldValue) {
+        let params = null
+        let makeRequest = false
+        if (newValue.length > oldValue.length) {
+          params = newValue.filter(x => !oldValue.includes(x))[0]
+          if (params) {
+            params['operation'] = 'add'
+            makeRequest = true
+          }
+        } else {
+          params = oldValue.filter(x => !newValue.includes(x))[0]
+          if (params) {
+            params['operation'] = 'remove'
+            makeRequest = true
+          }
+        }
+        if (makeRequest) {
+          const request = await this.$axios.put(`turns/${params.id}`, params)
+          if (request.status == 200) {
+            const turn = request.data.turn
+            this.$store.dispatch('turns/updateTurn', turn)
+          }
         }
       },
       disbledForDate(date_hour) {
@@ -91,7 +106,7 @@
               const arrayAvailables = turn.availables.split(",")
               for (const expert of this.experts) {
                 if (arrayAvailables.includes(expert.id.toString())) {
-                  this.selected.push({ turn_id: turn.id, user_id: expert.id })
+                  this.selected.push({ id: turn.id, user_id: expert.id  })
                 }
               }
             }
