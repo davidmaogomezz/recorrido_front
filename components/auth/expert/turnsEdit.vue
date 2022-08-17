@@ -15,7 +15,7 @@
             <tr role="row" v-for="turn in turns[day]">
               <td class="cell-center">{{turn.date_hour | formatDateHour }}</td>
               <td class="cell-center" v-for="expert in experts">
-                <b-checkbox :disabled="disbledForDate(day)" v-model="selected" :label="`check-box-${expert.id}`" :value="{ turn_id: turn.id, user_id: expert.id}"></b-checkbox>
+                <b-checkbox :disabled="disbledForDate(turn.date_hour)" v-model="selected" :label="`check-box-${expert.id}`" :value="{ turn_id: turn.id, user_id: expert.id}"></b-checkbox>
               </td>
             </tr>
           </tbody>
@@ -69,11 +69,10 @@
           // TO DO request edit availability
         }
       },
-      disbledForDate(day) {
-        let day_turns = new Date(day.split('/').reverse().join().replace(/,/g, '/'))
+      disbledForDate(date_hour) {
+        let day_turns = new Date(date_hour)
+        day_turns.setHours( day_turns.getHours() + 5 );
         let current_day = new Date()
-        day_turns = moment(day_turns).format('LL')
-        current_day = moment(current_day).format('LL')
         return day_turns < current_day
       }
     },
