@@ -31,6 +31,9 @@
     computed: {
       turns() {
         return this.$store.getters['turns/getTurns']
+      },
+      experts() {
+        return this.$store.getters['experts/getExperts']
       }
     },
     filters: {
@@ -42,7 +45,6 @@
         return moment(value).format('LT')
       },
       formatRangeTime: function (value) {
-        console.log(`value: ${value}`)
         const keys = Object.keys(value)
         const startRange = value[keys[0]]
         const endRange = value[keys[keys.length - 1]]
@@ -54,7 +56,17 @@
           return
         }
       }
-    }
+    },
+    methods: {
+      async getExperts() {
+        const request = await this.$axios.get('users', { params: { role: 'expert' } })
+        if (request.status == 200) this.$store.dispatch('experts/storeExperts', request.data.users)
+      }
+    },
+    mounted () {
+      this.getExperts();
+    },
+
   }
 </script>
 
