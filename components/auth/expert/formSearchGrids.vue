@@ -77,9 +77,7 @@
           return
         }
         const request = await this.$axios.get('turns', { params: this.search })
-        if (request.status == 200) {
-          this.turns = request.data.turns
-        }
+        if (request.status == 200) this.$store.dispatch('turns/storeTurns', request.data.turns)
       }
     },
     mounted() {
