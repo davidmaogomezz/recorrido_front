@@ -77,7 +77,16 @@
           return
         }
         const request = await this.$axios.get('turns', { params: this.search })
-        if (request.status == 200) this.$store.dispatch('turns/storeTurns', request.data.turns)
+        let turns = request.data.turns
+        const turnsGroupByDateHour = turns.reduce((group, turn) => {
+          const key = turn.date_hour.split('T')[0]
+          if (!group[key]) {
+            group[key] = []
+          }
+          group[key].push(turn)
+          return group
+        }, {})
+        if (request.status == 200) this.$store.dispatch('turns/storeTurns', turnsGroupByDateHour)
       }
     },
     mounted() {
