@@ -78,23 +78,37 @@
         if (request.status == 200) this.$store.dispatch('experts/storeExperts', request.data.users)
       },
       counterAssignments() {
-        this.experts.forEach(expert => {
-          let objectAssignment = { expert: expert, count: 0 }
-          let count = 0
-          Object.keys(this.turns).forEach(date => {
-            this.turns[date].forEach(turn => {
-              if (turn.user_id == expert.id) count++
-              if (turn.user_id === null) this.unassigned++
+        console.log(`experts -> ${this.experts}`);
+        console.log(`turns -> ${Object.keys(this.turns)}`);
+        if (this.experts.length > 0 && Object.keys(this.turns).length > 0) {
+          this.experts.forEach(expert => {
+            let objectAssignment = { expert: expert, count: 0 }
+            let count = 0
+            Object.keys(this.turns).forEach(date => {
+              this.turns[date].forEach(turn => {
+                if (turn.user_id == expert.id) {
+                  count++
+                } else if (turn.user_id == null) {
+                  this.unassigned++
+                }
+              })
             })
+            objectAssignment.count = count
+            this.assignments.push(objectAssignment)
           })
-          objectAssignment.count = count
-          this.assignments.push(objectAssignment)
-        })
+        }
       },
     },
+    watch: {
+      experts() {
+        this.counterAssignments()
+      },
+      turns() {
+        this.counterAssignments()
+      }
+    },
     mounted () {
-      this.getExperts();
-      this.counterAssignments()
+      this.getExperts()
     },
 
   }
