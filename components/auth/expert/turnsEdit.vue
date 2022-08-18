@@ -5,8 +5,8 @@
         <table role="table" aria-busy="false" aria-colcount="2" class="table b-table table-turns">
           <thead role="rowgroup" class="">
             <tr role="row">
-              <th class="cell-center column-turns-edit">{{ day | formatDate }}</th>
-              <th class="cell-center" role="columnheader" scope="col" aria-colindex="1" v-for="expert in experts">
+              <th bgcolor="#E7EE92" class="cell-center column-turns-edit">{{ day | formatDate }}</th>
+              <th :bgcolor="expert.color" class="cell-center" role="columnheader" scope="col" aria-colindex="1" v-for="expert in experts">
                 {{expert.first_name}}
               </th>
             </tr>
