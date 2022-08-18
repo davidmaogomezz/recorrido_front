@@ -1,6 +1,22 @@
 <template>
   <div class="container">
     <template v-if="Object.keys(turns).length > 0">
+      <table role="table" aria-colcount="2" class="table b-table table-count">
+        <tbody>
+          <tr role="row" v-for="item in assignments">
+            <th class="colum-expert" :bgcolor="item.expert.color">
+              {{item.expert.first_name}} {{item.expert.last_name}}
+            </th>
+            <th class="colum-count">
+              {{item.count}}
+            </th>
+          </tr>
+          <tr>
+            <th>Sin asignar</th>
+            <th>{{unassigned}}</th>
+          </tr>
+        </tbody>
+      </table>
       <div class="day" v-for="day in Object.keys(turns)">
         <table role="table" aria-busy="false" aria-colcount="2" class="table b-table table-turns">
           <thead role="rowgroup" class="">
@@ -32,6 +48,12 @@
   export default {
     layout: 'auth',
     middleware: ['protect'],
+    data () {
+      return {
+        unassigned: 0,
+        assignments: [],
+      }
+    },
     computed: {
       turns() {
         return this.$store.getters['turns/getTurns']
@@ -54,10 +76,25 @@
       async getExperts() {
         const request = await this.$axios.get('users', { params: { role: 'expert' } })
         if (request.status == 200) this.$store.dispatch('experts/storeExperts', request.data.users)
-      }
+      },
+      counterAssignments() {
+        this.experts.forEach(expert => {
+          let objectAssignment = { expert: expert, count: 0 }
+          let count = 0
+          Object.keys(this.turns).forEach(date => {
+            this.turns[date].forEach(turn => {
+              if (turn.user_id == expert.id) count++
+              if (turn.user_id === null) this.unassigned++
+            })
+          })
+          objectAssignment.count = count
+          this.assignments.push(objectAssignment)
+        })
+      },
     },
     mounted () {
       this.getExperts();
+      this.counterAssignments()
     },
 
   }
@@ -76,5 +113,16 @@
   }
   .cell-center {
     text-align: center;
+  }
+  .table-count {
+    margin-top: 32px;
+    margin-bottom: 32px;
+    max-width: 512px
+  }
+  .colum-expert {
+    max-width: 16px;
+  }
+  .colum-count {
+    max-width: 8px;
   }
 </style>
