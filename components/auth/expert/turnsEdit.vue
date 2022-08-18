@@ -14,8 +14,8 @@
           <tbody>
             <tr role="row" v-for="turn in turns[day]">
               <td :bgcolor="colorHourEdit(turn)" class="cell-center">{{turn.date_hour | formatDateHour }}</td>
-              <td class="cell-center" v-for="expert in experts">
-                <b-checkbox :disabled="disbledForDate(turn.date_hour)" v-model="selected" :value="{ id: turn.id, user_id: expert.id }"></b-checkbox>
+              <td :bgcolor="expertSelected(expert, turn)" class="cell-center" v-for="expert in experts">
+                <b-checkbox :disabled="disbledForDate(turn)" v-model="selected" :value="{ id: turn.id, user_id: expert.id }"></b-checkbox>
               </td>
             </tr>
           </tbody>
@@ -90,11 +90,12 @@
           }
         }
       },
-      disbledForDate(date_hour) {
+      disbledForDate(turn) {
+        let date_hour = turn.date_hour
         let day_turns = new Date(date_hour)
         day_turns.setHours( day_turns.getHours() + 5 );
         let current_day = new Date()
-        return (current_day - day_turns) > 900000
+        return ((current_day - day_turns) > 900000) || turn.user_id !== null
       },
       setCheck(turn, expert) {
         if (turn.availables) {
@@ -117,6 +118,13 @@
               }
             }
           }
+        }
+      },
+      expertSelected(expert, turn) {
+        if (turn.user_id == expert.id) {
+          return '#D3F1AF'
+        } else {
+          return '#FFFFFF'
         }
       }
     },

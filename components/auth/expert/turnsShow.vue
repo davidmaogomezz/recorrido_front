@@ -27,12 +27,10 @@
           </thead>
           <tbody>
             <tr role="row" v-for="turn in turns[day]">
-              <template v-if="turn.user_name">
+              <template v-if="turn.user_id !== null">
                 <td bgcolor="#A3D963" class="cell-left">{{turn.date_hour | formatDateHour }}</td>
-                <td :bgcolor="turn.user_color" v-if="turn.user_id != null">
-                  <template>
-                    {{turn.user_name}}
-                  </template>
+                <td :bgcolor="turn.user_color">
+                  {{turn.user_name}}
                 </td>
               </template>
               <template v-else>
@@ -86,8 +84,6 @@
         if (request.status == 200) this.$store.dispatch('experts/storeExperts', request.data.users)
       },
       counterAssignments() {
-        console.log(`experts -> ${this.experts}`);
-        console.log(`turns -> ${Object.keys(this.turns)}`);
         if (this.experts.length > 0 && Object.keys(this.turns).length > 0) {
           this.experts.forEach(expert => {
             let objectAssignment = { expert: expert, count: 0 }
