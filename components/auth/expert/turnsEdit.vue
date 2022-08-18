@@ -5,7 +5,7 @@
         <table role="table" aria-busy="false" aria-colcount="2" class="table b-table table-turns">
           <thead role="rowgroup" class="">
             <tr role="row">
-              <th bgcolor="#E7EE92" class="cell-center column-turns-edit">{{ day | formatDate }}</th>
+              <th bgcolor="#F6F4C0" class="cell-center column-turns-edit">{{ day | formatDate }}</th>
               <th :bgcolor="expert.color" class="cell-center" role="columnheader" scope="col" aria-colindex="1" v-for="expert in experts">
                 {{expert.first_name}}
               </th>
@@ -13,7 +13,7 @@
           </thead>
           <tbody>
             <tr role="row" v-for="turn in turns[day]">
-              <td class="cell-center">{{turn.date_hour | formatDateHour }}</td>
+              <td :bgcolor="colorHourEdit(turn)" class="cell-center">{{turn.date_hour | formatDateHour }}</td>
               <td class="cell-center" v-for="expert in experts">
                 <b-checkbox :disabled="disbledForDate(turn.date_hour)" v-model="selected" :value="{ id: turn.id, user_id: expert.id }"></b-checkbox>
               </td>
@@ -56,6 +56,13 @@
       }
     },
     methods: {
+      colorHourEdit(turn) {
+        if (turn.availables == null) {
+          return '#DEA49C'
+        } else {
+          return '#A3D963'
+        }
+      },
       async getExperts() {
         const request = await this.$axios.get('users', { params: { role: 'expert' } })
         if (request.status == 200) this.$store.dispatch('experts/storeExperts', request.data.users)

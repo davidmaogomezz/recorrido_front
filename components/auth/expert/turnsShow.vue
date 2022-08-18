@@ -20,19 +20,27 @@
       <div class="day" v-for="day in Object.keys(turns)">
         <table role="table" aria-busy="false" aria-colcount="2" class="table b-table table-turns">
           <thead role="rowgroup" class="">
-            <tr role="row">
-              <th class="cell-center column-turns-edit">{{ day | formatDate }}</th>
+            <tr bgcolor="#F6F4C0" role="row">
+              <th class="cell-left column-turns-edit">{{ day | formatDate }}</th>
               <th>Experto</th>
             </tr>
           </thead>
           <tbody>
             <tr role="row" v-for="turn in turns[day]">
-              <td class="cell-center">{{turn.date_hour | formatDateHour }}</td>
-              <td>
-                <template v-if="turn.user_name">
-                  {{turn.user_name}}
-                </template>
-              </td>
+              <template v-if="turn.user_name">
+                <td bgcolor="#A3D963" class="cell-left">{{turn.date_hour | formatDateHour }}</td>
+                <td :bgcolor="turn.user_color" v-if="turn.user_id != null">
+                  <template>
+                    {{turn.user_name}}
+                  </template>
+                </td>
+              </template>
+              <template v-else>
+                <td bgcolor="#DEA49C" class="cell-left">{{turn.date_hour | formatDateHour }}</td>
+                <td class="cell-warning">
+                  <img src="https://res.cloudinary.com/job-run/image/upload/v1660831329/warning_xatxes.png" alt="warning">
+                </td>
+              </template>
             </tr>
           </tbody>
         </table>
@@ -125,7 +133,10 @@
   .day {
     margin-bottom: 32px;
   }
-  .cell-center {
+  .cell-left {
+    text-align: left;
+  }
+  .cell-warning {
     text-align: center;
   }
   .table-count {
