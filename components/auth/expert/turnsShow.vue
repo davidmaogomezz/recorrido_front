@@ -6,16 +6,16 @@
           <thead role="rowgroup" class="">
             <tr role="row">
               <th class="cell-center column-turns-edit">{{ day | formatDate }}</th>
-              <th class="cell-center" role="columnheader" scope="col" aria-colindex="1" v-for="expert in experts">
-                {{expert.first_name}}
-              </th>
+              <th>Experto</th>
             </tr>
           </thead>
           <tbody>
             <tr role="row" v-for="turn in turns[day]">
               <td class="cell-center">{{turn.date_hour | formatDateHour }}</td>
-              <td class="cell-center" v-for="expert in experts">
-
+              <td>
+                <template v-if="turn.user_name">
+                  {{turn.user_name}}
+                </template>
               </td>
             </tr>
           </tbody>
