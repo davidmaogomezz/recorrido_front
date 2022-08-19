@@ -1,19 +1,19 @@
 <template>
   <div class="">
-    <descriptioRolesVue />
+    <instructions />
     <onLine />
   </div>
 </template>
 
 <script>
-import descriptioRolesVue from '../components/descriptioRoles.vue';
+import instructions from '../components/instructions.vue';
 import onLine from '~/components/onLine.vue'
 
 export default {
   layout: 'public',
   middleware: ['unprotect'],
   components: {
-    descriptioRolesVue,
+    instructions,
     onLine
   },
 }

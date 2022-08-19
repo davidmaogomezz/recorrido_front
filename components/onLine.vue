@@ -27,7 +27,7 @@
 
 <style scoped>
   .online {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     right: 10px;
   }
