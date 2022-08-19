@@ -57,6 +57,8 @@ export default {
           this.$cookies.set('uid', headers['uid'], {})
           this.$cookies.set('role', request.data.user.role, {})
           this.$cookies.set('user_id', request.data.user.id, {})
+          this.$cookies.set('first_name', request.data.user.first_name, {})
+          this.$cookies.set('last_name', request.data.user.last_name, {})
           this.$router.push('/auth')
         }
       } catch (error) {
