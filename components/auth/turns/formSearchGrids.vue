@@ -92,6 +92,8 @@
         this.$store.dispatch('turns/storeTurns', [])
         const request = await this.$axios.get('turns', { params: this.search })
         let turns = request.data.turns
+        const rangeTime = request.data.range_time
+        this.$store.dispatch('turns/setRangeTime', rangeTime)
         const turnsGroupByDateHour = turns.reduce((group, turn) => {
           const key = turn.date_hour.split('T')[0]
           if (!group[key]) {

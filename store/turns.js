@@ -1,5 +1,6 @@
 export const state = () => ({
-  turns: []
+  turns: [],
+  range_time: ''
 })
 
 export const mutations = {
@@ -17,6 +18,9 @@ export const mutations = {
       turns.sort((a, b) => a.id - b.id)
       state.turns[date] = turns
     }
+  },
+  SET_RANGE_TIME (state, range_time) {
+    state.range_time = range_time
   }
 }
 
@@ -26,11 +30,17 @@ export const actions = {
   },
   updateTurn({commit}, turn) {
     commit('UPDATE_TURNS', turn)
+  },
+  setRangeTime({commit}, range_time) {
+    commit('SET_RANGE_TIME', range_time)
   }
 }
 
 export const getters = {
   getTurns(state) {
     return state.turns
+  },
+  getRangeTime(state) {
+    return state.range_time
   }
 }

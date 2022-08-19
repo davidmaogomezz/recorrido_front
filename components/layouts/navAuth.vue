@@ -24,6 +24,7 @@ export default {
       this.$store.dispatch('role/setRole', null)
       this.$store.dispatch('contracts/storeContracts', [])
       this.$store.dispatch('turns/storeTurns', [])
+      this.$store.dispatch('turns/setRangeTime', '')
       this.$store.dispatch('experts/storeExperts', [])
     },
     makeWelcomeGreeting() {
