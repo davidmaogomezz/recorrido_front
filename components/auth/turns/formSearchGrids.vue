@@ -89,6 +89,7 @@
         if (this.$v.$invalid) {
           return
         }
+        this.$store.dispatch('turns/storeTurns', [])
         const request = await this.$axios.get('turns', { params: this.search })
         let turns = request.data.turns
         const turnsGroupByDateHour = turns.reduce((group, turn) => {
