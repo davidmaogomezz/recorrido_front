@@ -1,16 +1,19 @@
 <template>
   <div>
-    <index/>
+    <formSearchGrids/>
+    <turns/>
   </div>
 </template>
 
 <script>
-  import index from './../turns/index.vue'
+  import formSearchGrids from './formSearchGrids.vue'
+  import turns from './turns.vue'
   export default {
     layout: 'auth',
     middleware: ['protect'],
     components: {
-      index
+      formSearchGrids,
+      turns
     }
   }
 </script>

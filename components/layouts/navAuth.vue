@@ -16,6 +16,10 @@ export default {
     logout() {
       this.$router.push('/')
       this.$cookies.removeAll()
+      this.$store.dispatch('role/setRole', null)
+      this.$store.dispatch('contracts/storeContracts', [])
+      this.$store.dispatch('turns/storeTurns', [])
+      this.$store.dispatch('experts/storeExperts', [])
     }
   },
 }

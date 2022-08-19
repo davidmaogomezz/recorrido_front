@@ -1,16 +1,16 @@
 <template>
   <div>
-    <h1>Component client</h1>
+    <index/>
   </div>
 </template>
 
 <script>
+  import index from './../turns/index.vue'
   export default {
     layout: 'auth',
     middleware: ['protect'],
-    data() {
-      return {
-      }
+    components: {
+      index
     }
   }
 </script>

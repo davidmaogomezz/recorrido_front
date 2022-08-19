@@ -2,7 +2,7 @@
   <div class="container">
     <template v-if="Object.keys(turns).length > 0">
       <b-card class="card-form" :title="Object.keys(turns) | formatRangeTime">
-        <b-button class="button-toggle-turn" variant="success" @click.prevent="toggleComponent()">{{textButton}}</b-button>
+        <b-button v-if="role !== 'client'" class="button-toggle-turn" variant="success" @click.prevent="toggleComponent()">{{textButton}}</b-button>
         <component :is="component"/>
       </b-card>
     </template>
@@ -38,6 +38,9 @@
     computed: {
       turns() {
         return this.$store.getters['turns/getTurns']
+      },
+      role() {
+        return this.$store.getters['role/getRole']
       }
     },
     filters: {

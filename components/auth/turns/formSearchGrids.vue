@@ -37,8 +37,7 @@
           year: null
         },
         weeks: [],
-        contracts: [],
-        turns: []
+        userId: null
       }
     },
     validations: {
@@ -49,6 +48,14 @@
         week: {
           required
         }
+      }
+    },
+    computed: {
+      contracts() {
+        return this.$store.getters['contracts/getContracts']
+      },
+      role() {
+        return this.$store.getters['role/getRole']
       }
     },
     methods: {
@@ -69,7 +76,13 @@
       },
       async getContracts() {
         const response = await this.$axios.$get('contracts')
-        this.contracts = response.contracts
+        const contracts = response.contracts
+        if (this.role == 'client') {
+          const contractsClient = contracts.filter(contract => contract.requested_by_id == this.userId)
+          this.$store.dispatch('contracts/storeContracts', contractsClient)
+        } else {
+          this.$store.dispatch('contracts/storeContracts', contracts)
+        }
       },
       async handleSubmit() {
         this.$v.$touch()
@@ -87,11 +100,15 @@
           return group
         }, {})
         if (request.status == 200) this.$store.dispatch('turns/storeTurns', turnsGroupByDateHour)
+      },
+      getUserId() {
+        this.userId = this.$cookies.get('user_id')
       }
     },
     mounted() {
       this.fillWeeks()
       this.getContracts()
+      this.getUserId()
     }
   }
 </script>

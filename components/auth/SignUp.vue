@@ -107,6 +107,8 @@
             this.$cookies.set('client', headers['client'], {})
             this.$cookies.set('uid', headers['uid'], {})
             this.$cookies.set('role', request.data.user.role, {})
+            this.$cookies.set('user_id', request.data.user.id, {})
+            this.$cookies.set('user', request.data.user, {})
             this.$router.push('/auth')
           }
         } catch (error) {

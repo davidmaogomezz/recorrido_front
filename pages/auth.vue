@@ -18,6 +18,7 @@
     },
     mounted() {
       this.role = this.$cookies.get('role')
+      this.$store.dispatch('role/setRole', this.role)
     },
     components: {
       admin,
