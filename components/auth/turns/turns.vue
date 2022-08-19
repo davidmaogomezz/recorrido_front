@@ -35,6 +35,7 @@
         }
       },
       formatRangeTime: function () {
+        let rangeTimeSplit = this.rangeTime.split('..')
         let dateStart = new Date(rangeTimeSplit[0].split(' ')[0])
         let dateEnd = new Date(rangeTimeSplit[1].split(' ')[0])
         dateStart.setHours( dateStart.getHours() + 5 );
